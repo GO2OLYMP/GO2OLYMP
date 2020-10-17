@@ -17,4 +17,21 @@ client.on('guildMemberRemove', (member) =>
 	member.send('Очень жаль, что ты вышел с сервера **Go2Olymp**! :(')
 })
 
+client.on('message', (message) => {
+    if (!message.content.startsWith(prefix)) return;
+    let args = message.content.substring(prefix.length).split(' ');
+    let command = args.shift();
+    if (command === 'clear') {
+        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('Для использования данной команды тебе необходимы права для удаления сообщения');
+        let count = Number.parseInt(args[0]);
+        if (!count || count > 100 || count <= 0) count = 100;
+        message.channel
+            .bulkDelete(count)
+            .then(() => {
+                message.channel.send(`Успешно удалено ${count} сообщений`);
+            })
+            .catch((err) => {
+                message.channel.send('Ошибка удаления сообщений');
+})
+
 client.login("...");
